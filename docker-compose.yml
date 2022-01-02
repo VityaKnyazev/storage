@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  db-school:
+    image: postgres:14.1
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=storage
