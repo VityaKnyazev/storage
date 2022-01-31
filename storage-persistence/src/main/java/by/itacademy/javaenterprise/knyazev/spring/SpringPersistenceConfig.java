@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -21,9 +20,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = { "by.itacademy.javaenterprise.knyazev.dao" })
-@ComponentScan(basePackages = { "by.itacademy.javaenterprise.knyazev.dao" })
 @PropertySource(value = { "classpath:db.properties", "classpath:jpa.properties" })
-@EnableTransactionManagement(proxyTargetClass = true)
+@EnableTransactionManagement
 public class SpringPersistenceConfig {
 	@Autowired
 	Environment env;
@@ -61,7 +59,7 @@ public class SpringPersistenceConfig {
 	
 	@Bean
 	JpaTransactionManager transactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory().getNativeEntityManagerFactory());
+		JpaTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory().getObject());
 		return transactionManager;		
 	}
 	

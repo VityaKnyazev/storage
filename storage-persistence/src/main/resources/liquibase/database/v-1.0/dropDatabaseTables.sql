@@ -1,6 +1,12 @@
+ALTER table IF EXISTS purchases DROP CONSTRAINT fk_user;
+ALTER table IF EXISTS purchases DROP CONSTRAINT fk_storehouse;
+DROP table IF EXISTS  purchases;
+
+DROP table IF EXISTS  users;
+DROP TYPE IF EXISTS role_enum;
+
 ALTER table IF EXISTS storehouse DROP CONSTRAINT fk_good;
 DROP table IF EXISTS  storehouse;
-DROP TYPE IF EXISTS unit_enum;
 
 ALTER table IF EXISTS goods 
 DROP CONSTRAINT fk_category, 

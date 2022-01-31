@@ -3,7 +3,6 @@ Insert Into categories (name, description) values ('овощи', 'Пример: 
 Insert Into categories (name, description) values ('зелень', 'Пример: петрушка, укроп, зеленый лук и т.д.');
 Insert Into categories (name, description) values ('ягоды', 'Пример: брусника, клубника, смародина и т.д.');
 
-
 Insert Into producers(name, postal_code, country, region, locality, street, building) values('ООО "Ягода-малина"', '212030', 'Республика Беларусь', 'Минская обл.', 'деревня Гудки', 'ул. Красная', '6');
 Insert Into producers(name, postal_code, country, region, locality, street, building) values('ООО "Плодоовощное"', '220265', 'Республика Беларусь', 'Минская обл.', 'д. Верба', 'ул. Синяя', '18');
 Insert Into producers(name, postal_code, country, region, locality) values('ООО "Урожай"', '245879', 'Республика Беларусь', 'Минская обл.', 'д. Весна');
@@ -16,7 +15,6 @@ Insert Into producers(name, postal_code, country, region, locality, street, buil
 Insert Into producers(name, postal_code, country, region, locality, street, building) values('СООО "Урожайница"', '230564', 'Республика Беларусь', 'Витебская обл.', 'д. Светлый путь', 'ул. Конева', 'д. 2');
 Insert Into producers(name, postal_code, country, region, locality, street, building) values('ООО "Растеневоды"', '212045', 'Республика Беларусь', 'Могилевская обл.', 'д. Красные горы', 'ул. Скворцово', 'д. 21, оф. 5');
 Insert Into producers(name, postal_code, country, region, locality) values('ООО "Зеленый мир"', '220032', 'Республика Беларусь', 'Могилевская обл.', 'д. Мухоморы');
-
 
 Insert Into goods(name, sort, description, category_id, producer_id) values('Яблоко', 'Черный принц', 'Яблоко для производства сока', 1, 3);
 Insert Into goods(name, sort, description, category_id, producer_id) values('Яблоко', 'Карамельлка', 'Яблоко для детей', 1, 5);
@@ -63,7 +61,6 @@ Insert Into goods(name, sort, description, category_id, producer_id) values('К�
 Insert Into goods(name, sort, description, category_id, producer_id) values('Клубника', 'Великан', 'Клубника для производства сока', 4, 8);
 Insert Into goods(name, sort, description, category_id, producer_id) values('Клубника', 'Садовая', 'Клубника сладкая средняя', 4, 3);
 
-
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(1, '135698', 323, 4.2);
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(5, '185697', 408, 6.7);
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(9, '135698', 255, 7.2);
@@ -77,3 +74,9 @@ Insert INTO storehouse(good_id, ttn_num, quantity, price) values(32, 'Н256985',
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(34, '023658', 135, 5.3);
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(37, '000002', 128, 9.3);
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(40, '000256', 118, 8.3);
+
+Insert INTO users(name, password, email, enabled, role) values('Admin', '{bcrypt}$2a$04$bUwXJIjQa4lcRlsJ6Ao9TO.UKmF1IKv9Gae0yLWWEGjvuXTIVaVoC', 'Admin@gmail.com', TRUE, 'ROLE_ADMIN');
+Insert INTO users(name, password, email, enabled, role) values('User', '{bcrypt}$2a$04$yTcskB2b2l3lq.r/K46sqe9dEmY47LZHWlIIRLfRvTpNwXeo0J4oq', 'User@gmail.com', TRUE, 'ROLE_USER');
+
+Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 1, 'кг', 6.8, 4.2, 'reserved');
+Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 4, 'кг', 12.6, 4.4, 'reserved');

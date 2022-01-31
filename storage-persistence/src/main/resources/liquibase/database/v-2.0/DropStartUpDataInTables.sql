@@ -1,4 +1,1 @@
-DELETE FROM storehouse;
-DELETE FROM goods;
-DELETE FROM categories;
-DELETE FROM producers;
+TRUNCATE purchases, users, storehouse, goods, categories, producers RESTART IDENTITY;
