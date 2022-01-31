@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -22,29 +22,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "storehouse")
-public class Storehouse {
-	
+@Table(name = "purchases")
+public class Purchase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "good_id", nullable = false)
-	private Good good;
-	
-	@Column(length = 15, name = "ttn_num")
-	private String ttnNum;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE })
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinColumn(name = "storehouse_id")
+	private Storehouse storehouse;
+
 	@Column(name = "date", updatable = false, nullable = false)
 	private LocalDateTime dateTime;
-	
-	@Column(length = 2, nullable = false)
+
+	@Column(nullable = false)
 	private String unit;
-	
+
 	@Column(nullable = false, precision = 9, scale = 3)
 	private BigDecimal quantity;
-	
+
 	@Column(nullable = false, precision = 11, scale = 2)
 	private BigDecimal price;
+
+	@Column(nullable = false, length = 8)
+	private String status;
 }

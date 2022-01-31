@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "categories")
-@NamedNativeQuery(name= "allCategories", query = "SELECT id, name, description FROM categories", resultClass = Category.class)
+@NamedNativeQuery(name = "allCategories", query = "SELECT id, name, description FROM categories", resultClass = Category.class)
 public class Category {
 
 	@Id
@@ -36,8 +36,15 @@ public class Category {
 
 	@Column(length = 70, nullable = false)
 	private String description;
-	
-	@OneToMany(mappedBy = "category", targetEntity = Good.class, fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+	@OneToMany(mappedBy = "category", targetEntity = Good.class, fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
+			CascadeType.MERGE })
 	@Immutable
 	private List<Good> goods;
+
+	public Category(long id, String name, String description) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
 }

@@ -2,11 +2,13 @@ package by.itacademy.javaenterprise.knyazev.spring;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import exceptions.handlers.ControllersExceptionHandler;
+
 public class WebDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] {SpringServiceConfig.class, SpringPersistenceConfig.class};
+		return new Class[] {WebSecurityConfig.class, ControllersExceptionHandler.class, SpringServiceConfig.class, SpringPersistenceConfig.class};
 	}
 
 	@Override
@@ -17,6 +19,6 @@ public class WebDispatcherServletInitializer extends AbstractAnnotationConfigDis
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] {"/"};
-	}
+	}	
 
 }

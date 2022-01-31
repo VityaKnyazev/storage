@@ -14,10 +14,14 @@ import by.itacademy.javaenterprise.knyazev.entities.Good;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
-	
+
 	@Mappings({ @Mapping(target = "goodsCount", ignore = true), @Mapping(target = "goods.category", ignore = true),
 			@Mapping(target = "goods.producer.goods", ignore = true) })
 	public CategoryDTO toDTO(Category category);
+
+
+	@Mapping(target = "goods", ignore = true)
+	public Category toCategory(CategoryDTO categoryDTO);
 
 	default List<CategoryDTO> toDTOList(Map<Category, Long> categoriesGoodsQuantity) {
 		if (categoriesGoodsQuantity == null || categoriesGoodsQuantity.isEmpty()) {
@@ -39,7 +43,7 @@ public interface CategoryMapper {
 		return caegoriesDTO;
 
 	}
-	
+
 	@Mappings({ @Mapping(target = "category", ignore = true), @Mapping(target = "producer.goods", ignore = true) })
 	public Good ignoreCategoryAndGoodsInProducer(Good good);
 
