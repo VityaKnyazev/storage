@@ -21,19 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import by.itacademy.javaenterprise.knyazev.dto.CategoryDTO;
 import by.itacademy.javaenterprise.knyazev.entities.Category;
+import by.itacademy.javaenterprise.knyazev.exceptions.ControllerException;
 import by.itacademy.javaenterprise.knyazev.mappers.CategoryMapper;
 import by.itacademy.javaenterprise.knyazev.services.CategoriesService;
 import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
-import exceptions.ControllerException;
 
 @RestController
 @Validated
 public class CategoriesController {
+	private static final Logger logger = LoggerFactory.getLogger(CategoriesController.class);
 	@Autowired
 	private CategoriesService categoriesService;
 	@Autowired
-	CategoryMapper categoryMapperImpl;
-	private static final Logger logger = LoggerFactory.getLogger(CategoriesController.class);
+	CategoryMapper categoryMapperImpl;	
 
 	@GetMapping("/categories")
 	public List<CategoryDTO> getAll() {

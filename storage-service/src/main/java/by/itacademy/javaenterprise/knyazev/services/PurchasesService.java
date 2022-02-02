@@ -20,13 +20,14 @@ import by.itacademy.javaenterprise.knyazev.utils.Status;
 
 @Service
 public class PurchasesService {
+	private static final Logger logger = LoggerFactory.getLogger(PurchasesService.class.getName());
 	@Autowired
 	private PurchasesDAO purchasesDAO;
 	@Autowired
 	private UsersService usersService;
 	@Autowired
 	private StorehouseService storehouseService;
-	private static final Logger logger = LoggerFactory.getLogger(PurchasesService.class.getName());
+	
 
 	@Transactional
 	public List<Purchase> showReserved() throws ServiceException {

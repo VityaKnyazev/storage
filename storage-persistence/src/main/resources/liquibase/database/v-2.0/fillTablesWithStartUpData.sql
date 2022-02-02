@@ -80,3 +80,4 @@ Insert INTO users(name, password, email, enabled, role) values('User', '{bcrypt}
 
 Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 1, 'кг', 6.8, 4.2, 'reserved');
 Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 4, 'кг', 12.6, 4.4, 'reserved');
+Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 3, 'кг', 15.8, 4.4, 'reserved');

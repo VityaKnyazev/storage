@@ -1,4 +1,4 @@
-package exceptions.responses;
+package by.itacademy.javaenterprise.knyazev.exceptions.responses;
 
 import java.util.Date;
 

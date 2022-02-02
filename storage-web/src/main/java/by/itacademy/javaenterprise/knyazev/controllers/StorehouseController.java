@@ -22,29 +22,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import by.itacademy.javaenterprise.knyazev.dto.StorehouseDTO;
 import by.itacademy.javaenterprise.knyazev.entities.Storehouse;
+import by.itacademy.javaenterprise.knyazev.exceptions.ControllerException;
 import by.itacademy.javaenterprise.knyazev.mappers.StorehouseMapper;
 import by.itacademy.javaenterprise.knyazev.services.StorehouseService;
 import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
-import exceptions.ControllerException;
 
 @RestController
 @Validated
 public class StorehouseController {
+	private static final Logger logger = LoggerFactory.getLogger(StorehouseController.class);
 	@Autowired
 	StorehouseService storehouseService;
 	@Autowired
 	StorehouseMapper storehouseMapperImpl;
-	private static final Logger logger = LoggerFactory.getLogger(StorehouseController.class);
+	
 
 	@GetMapping("/storehouses")
 	public List<StorehouseDTO> getAll(
-			@RequestParam(required = false) @Min(value = 1, message = "page id must be greater than or equals to 1") Integer page)
+			@RequestParam(required = false) @Min(value = 1, message = "page id must be greater than or equals to 1") Integer page,
+			@RequestParam(required = false) @Min(value = 1, message = "size must be greater than or equals to 1") Integer size)
 			throws ControllerException {
-		if (page == null) {
+		if (page == null || size == null) {
 			return storehouseMapperImpl.toListDTO(storehouseService.showAll());
 		} else {
 			try {
-				return storehouseMapperImpl.toListDTO(storehouseService.showAll(page));
+				return storehouseMapperImpl.toListDTO(storehouseService.showAll(page, size));
 			} catch (ServiceException e) {
 				logger.error(e.getMessage(), e);
 				throw new ControllerException("Bad request in page request param. " + e.getMessage(), e);
@@ -91,7 +93,8 @@ public class StorehouseController {
 
 	@DeleteMapping("/storehouses/{id}")
 	public ResponseEntity<String> removeStorehouse(
-			@PathVariable @Min(value = 1L, message = "id must be greater than or equals to 1") Long id) throws ControllerException {
+			@PathVariable @Min(value = 1L, message = "id must be greater than or equals to 1") Long id)
+			throws ControllerException {
 		String message = "storehouse with id=" + id + " successfully deleted";
 
 		try {

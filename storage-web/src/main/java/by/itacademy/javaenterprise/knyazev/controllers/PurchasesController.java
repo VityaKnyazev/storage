@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import by.itacademy.javaenterprise.knyazev.dto.PurchaseDTO;
 import by.itacademy.javaenterprise.knyazev.entities.Purchase;
+import by.itacademy.javaenterprise.knyazev.exceptions.ControllerException;
 import by.itacademy.javaenterprise.knyazev.mappers.PurchaseMapper;
 import by.itacademy.javaenterprise.knyazev.services.PurchasesService;
 import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
-import exceptions.ControllerException;
 
 @RestController
 @Validated
 public class PurchasesController {
+	private static final Logger logger = LoggerFactory.getLogger(PurchasesController.class);
 	@Autowired
 	PurchasesService purchasesService;
 	@Autowired
 	PurchaseMapper purchaseMapperImpl;
-	private static final Logger logger = LoggerFactory.getLogger(PurchasesController.class);
-
+	
 	@GetMapping("/purchases")
 	public List<PurchaseDTO> getAll() throws ControllerException {
 		try {

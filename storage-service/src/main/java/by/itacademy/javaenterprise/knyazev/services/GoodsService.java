@@ -17,10 +17,10 @@ import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
 
 @Service
 public class GoodsService {
+	private static final Logger logger = LoggerFactory.getLogger(GoodsService.class);
 	@Autowired
 	private GoodsDAO goodsDAO;
-	private static final Logger logger = LoggerFactory.getLogger(GoodsService.class);
-	private static final int COUNT_ON_PAGE = 3;
+	
 
 	@Transactional
 	public List<Good> showAll() {
@@ -28,9 +28,9 @@ public class GoodsService {
 	}
 
 	@Transactional
-	public List<Good> showAll(Integer page) throws ServiceException {
+	public List<Good> showAll(Integer page, Integer size) throws ServiceException {
 		int realPage = page.intValue() - 1;
-		List<Good> goods = goodsDAO.findAll(PageRequest.of(realPage, COUNT_ON_PAGE)).getContent();
+		List<Good> goods = goodsDAO.findAll(PageRequest.of(realPage, size)).getContent();
 
 		if (!goods.isEmpty()) {
 			return goods;

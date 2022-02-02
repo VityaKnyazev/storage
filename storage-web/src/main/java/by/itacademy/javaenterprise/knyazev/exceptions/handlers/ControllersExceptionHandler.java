@@ -1,4 +1,4 @@
-package exceptions.handlers;
+package by.itacademy.javaenterprise.knyazev.exceptions.handlers;
 
 import java.util.Date;
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import exceptions.ControllerException;
-import exceptions.responses.ErrorMessage;
+import by.itacademy.javaenterprise.knyazev.exceptions.ControllerException;
+import by.itacademy.javaenterprise.knyazev.exceptions.responses.ErrorMessage;
 
 @ControllerAdvice
 public class ControllersExceptionHandler extends ResponseEntityExceptionHandler {

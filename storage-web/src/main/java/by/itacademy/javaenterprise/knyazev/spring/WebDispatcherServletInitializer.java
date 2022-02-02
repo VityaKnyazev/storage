@@ -2,7 +2,7 @@ package by.itacademy.javaenterprise.knyazev.spring;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import exceptions.handlers.ControllersExceptionHandler;
+import by.itacademy.javaenterprise.knyazev.exceptions.handlers.ControllersExceptionHandler;
 
 public class WebDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 

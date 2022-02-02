@@ -17,10 +17,9 @@ import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
 
 @Service
 public class StorehouseService {
-	@Autowired
-	private StorehouseDAO storehouseDAO;
-	private static final int COUNT_ON_PAGE = 3;
 	private static final Logger logger = LoggerFactory.getLogger(StorehouseService.class);
+	@Autowired
+	private StorehouseDAO storehouseDAO;	
 
 	@Transactional
 	public List<Storehouse> showAll() {
@@ -28,9 +27,9 @@ public class StorehouseService {
 	}
 
 	@Transactional
-	public List<Storehouse> showAll(Integer page) throws ServiceException {
+	public List<Storehouse> showAll(Integer page, Integer size) throws ServiceException {
 		int realPage = page.intValue() - 1;
-		List<Storehouse> storehouses = storehouseDAO.findAll(PageRequest.of(realPage, COUNT_ON_PAGE)).getContent();
+		List<Storehouse> storehouses = storehouseDAO.findAll(PageRequest.of(realPage, size)).getContent();
 
 		if (!storehouses.isEmpty()) {
 			return storehouses;

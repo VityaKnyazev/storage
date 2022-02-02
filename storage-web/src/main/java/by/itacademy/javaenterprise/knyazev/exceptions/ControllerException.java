@@ -1,4 +1,4 @@
-package exceptions;
+package by.itacademy.javaenterprise.knyazev.exceptions;
 
 public class ControllerException extends Exception {
 	

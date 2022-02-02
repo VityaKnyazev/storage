@@ -18,11 +18,11 @@ import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
 
 @Service
 public class CategoriesService {
+	private static final Logger logger = LoggerFactory.getLogger(CategoriesService.class);
 	@Autowired
 	private CategoriesDAO categoriesDAO;
 	@Autowired
-	private GoodsDAO goodsDAO;
-	private static final Logger logger = LoggerFactory.getLogger(CategoriesService.class);
+	private GoodsDAO goodsDAO;	
 
 	@Transactional
 	public Map<Category, Long> showAll() {

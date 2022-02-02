@@ -19,9 +19,9 @@ import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
 
 @Service
 public class UsersService implements UserDetailsService {
-	@Autowired
-	private UsersDAO usersDAO;
 	private static final Logger logger = LoggerFactory.getLogger(UsersService.class);
+	@Autowired
+	private UsersDAO usersDAO;	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
