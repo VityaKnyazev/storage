@@ -1,5 +1,6 @@
 package by.itacademy.javaenterprise.knyazev.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -10,6 +11,8 @@ import lombok.Data;
 
 @Data
 public class StorehouseDTO {
+	
+	@Min(value = 1L, message = "ID must be above 1")
 	private Long id;
 	
 	@NotNull(message = "Good in StorehouseDTO must not be null")

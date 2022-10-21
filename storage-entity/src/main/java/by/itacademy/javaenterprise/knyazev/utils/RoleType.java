@@ -1,5 +1,6 @@
 package by.itacademy.javaenterprise.knyazev.utils;
 
-public enum Status {
-	reserved, bought, deleted
+public enum RoleType {
+	ROLE_ADMIN,
+	ROLE_USER
 }

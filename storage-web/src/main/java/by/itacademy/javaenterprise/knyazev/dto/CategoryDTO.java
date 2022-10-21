@@ -2,6 +2,7 @@ package by.itacademy.javaenterprise.knyazev.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -11,6 +12,8 @@ import lombok.Data;
 @Data
 public class CategoryDTO {
 	private Long goodsCount;
+	
+	@Min(value = 1L, message = "ID must be above 1")
 	private Long id;
 	
 	@NotBlank(message = "CategoryDTO name have to be not null or whitespace!")

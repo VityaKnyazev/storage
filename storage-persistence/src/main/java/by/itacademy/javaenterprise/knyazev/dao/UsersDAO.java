@@ -8,4 +8,6 @@ import by.itacademy.javaenterprise.knyazev.entities.User;
 @Repository
 public interface UsersDAO extends JpaRepository<User, Long> {
 	public User findByName(String name);
+	public boolean existsByEmail(String email);
+	public boolean existsByName(String name);
 }

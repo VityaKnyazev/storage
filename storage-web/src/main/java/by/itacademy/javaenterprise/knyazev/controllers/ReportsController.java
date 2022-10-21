@@ -26,7 +26,7 @@ public class ReportsController {
 	@GetMapping("/reports")
 	public ReportDTO getAll() throws ControllerException {
 		try {
-			return reportMapperImpl.toDTO(purchasesService.showBought());
+			return reportMapperImpl.toDTO(purchasesService.showAllBought());
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
 			throw new ControllerException("Error on showing purchases", e);

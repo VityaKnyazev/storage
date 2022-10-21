@@ -75,8 +75,14 @@ Insert INTO storehouse(good_id, ttn_num, quantity, price) values(34, '023658', 1
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(37, '000002', 128, 9.3);
 Insert INTO storehouse(good_id, ttn_num, quantity, price) values(40, '000256', 118, 8.3);
 
-Insert INTO users(name, password, email, enabled, role) values('Admin', '{bcrypt}$2a$04$bUwXJIjQa4lcRlsJ6Ao9TO.UKmF1IKv9Gae0yLWWEGjvuXTIVaVoC', 'Admin@gmail.com', TRUE, 'ROLE_ADMIN');
-Insert INTO users(name, password, email, enabled, role) values('User', '{bcrypt}$2a$04$yTcskB2b2l3lq.r/K46sqe9dEmY47LZHWlIIRLfRvTpNwXeo0J4oq', 'User@gmail.com', TRUE, 'ROLE_USER');
+Insert INTO roles(name) values('ROLE_ADMIN');
+Insert INTO roles(name) values('ROLE_USER');
+
+Insert INTO users(name, password, email, enabled) values('Admin', '{bcrypt}$2a$04$bUwXJIjQa4lcRlsJ6Ao9TO.UKmF1IKv9Gae0yLWWEGjvuXTIVaVoC', 'Admin@gmail.com', TRUE);
+Insert INTO users(name, password, email, enabled) values('User', '{bcrypt}$2a$04$yTcskB2b2l3lq.r/K46sqe9dEmY47LZHWlIIRLfRvTpNwXeo0J4oq', 'User@gmail.com', TRUE);
+
+Insert INTO users_roles(user_id, role_id) values(1, 1);
+Insert INTO users_roles(user_id, role_id) values(2, 2);
 
 Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 1, 'кг', 6.8, 4.2, 'reserved');
 Insert INTO purchases(user_id, storehouse_id, unit, quantity, price, status) values(2, 4, 'кг', 12.6, 4.4, 'reserved');

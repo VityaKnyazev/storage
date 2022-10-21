@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import by.itacademy.javaenterprise.knyazev.converters.UnitTypeConverter;
+import by.itacademy.javaenterprise.knyazev.utils.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,8 +42,9 @@ public class Storehouse {
 	@Column(name = "date", updatable = false, nullable = false)
 	private LocalDateTime dateTime;
 	
-	@Column(length = 2, nullable = false)
-	private String unit;
+	@Column(nullable = false)
+	@Convert(converter = UnitTypeConverter.class)
+	private Unit unit;
 	
 	@Column(nullable = false, precision = 9, scale = 3)
 	private BigDecimal quantity;

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import by.itacademy.javaenterprise.knyazev.converters.StatusTypeConverter;
+import by.itacademy.javaenterprise.knyazev.converters.UnitTypeConverter;
+import by.itacademy.javaenterprise.knyazev.utils.Status;
+import by.itacademy.javaenterprise.knyazev.utils.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +45,8 @@ public class Purchase {
 	private LocalDateTime dateTime;
 
 	@Column(nullable = false)
-	private String unit;
+	@Convert(converter = UnitTypeConverter.class)
+	private Unit unit;
 
 	@Column(nullable = false, precision = 9, scale = 3)
 	private BigDecimal quantity;
@@ -48,6 +54,7 @@ public class Purchase {
 	@Column(nullable = false, precision = 11, scale = 2)
 	private BigDecimal price;
 
-	@Column(nullable = false, length = 8)
-	private String status;
+	@Column(nullable = false)
+	@Convert(converter = StatusTypeConverter.class)
+	private Status status;
 }

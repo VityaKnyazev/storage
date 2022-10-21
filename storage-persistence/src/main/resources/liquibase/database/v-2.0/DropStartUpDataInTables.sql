@@ -1,1 +1,1 @@
-TRUNCATE purchases, users, storehouse, goods, categories, producers RESTART IDENTITY;
+TRUNCATE purchases, users_roles, roles, users, storehouse, goods, categories, producers RESTART IDENTITY;

@@ -10,6 +10,8 @@ import lombok.Data;
 
 @Data
 public class PurchaseDTO {
+	
+	@Min(value = 1L, message = "ID must be above 1")
 	private Long id;
 	
 	@NotNull(message = "storehouse id in PurchaseDTO must not be null")

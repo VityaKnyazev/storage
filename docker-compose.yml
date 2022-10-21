@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  db-school:
-    image: postgres:14.1
+  db-storage:
+    image: postgres:14.5
     restart: always
     ports:
       - 5432:5432

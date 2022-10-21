@@ -8,7 +8,7 @@
 	</appender>
 	
 	<appender name="FILE_ROOT" class="ch.qos.logback.core.FileAppender">
-		<file>src/main/resources/logs/appLoggingRoot.log</file>
+		<file>D:/Programming/ItAcademy/storage/storage-web/src/main/resources/logs/appLoggingRoot.log</file>
 
 		<encoder>
 			<pattern>%d %logger{10} %level [%thread] [%file:%line] - %msg%n</pattern>
@@ -16,7 +16,7 @@
 	</appender>
 	
 	<appender name="FILE_SERVICE" class="ch.qos.logback.core.FileAppender">
-		<file>src/main/resources/logs/appLoggingService.log</file>
+		<file>D:/Programming/ItAcademy/storage/storage-web/src/main/resources/logs/appLoggingService.log</file>
 
 		<encoder>
 			<pattern>%d %logger{10} %level [%thread] [%file:%line] - %msg%n</pattern>
@@ -24,7 +24,7 @@
 	</appender>
 	
 	<appender name="FILE_WEB" class="ch.qos.logback.core.FileAppender">
-		<file>src/main/resources/logs/appLoggingWeb.log</file>
+		<file>D:/Programming/ItAcademy/storage/storage-web/src/main/resources/logs/appLoggingWeb.log</file>
 
 		<encoder>
 			<pattern>%d %logger{10} %level [%thread] [%file:%line] - %msg%n</pattern>
@@ -74,6 +74,13 @@
 		<appender-ref ref="FILE_WEB" />
 	</logger>
 	
+	<logger name="by.itacademy.javaenterprise.knyazev.controllers.UsersController" level="ERROR" additivity="false">
+		<appender-ref ref="FILE_WEB" />
+	</logger>
+	
+	<logger name="by.itacademy.javaenterprise.knyazev.controllers.AuthController" level="ERROR" additivity="false">
+		<appender-ref ref="FILE_WEB" />
+	</logger>
 		
 	<root level="INFO">
 		<appender-ref ref="FILE_ROOT" />

@@ -60,7 +60,7 @@ public class SpringPersistenceConfig {
 	@Bean
 	JpaTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory().getObject());
-		return transactionManager;		
+		return transactionManager;
 	}
 	
 	@Bean

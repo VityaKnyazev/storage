@@ -28,8 +28,6 @@
 <ol>
 <li>Плохо сделаны тесты. Успел замокать один сервис.</li>
 <li>Не сделаны интграционные тесты.</li>
-<li>При входе в приложение отображается html-форма аутентификации</li>
-<li>Не разобрался почему Hibernate не сохраняет запись, когда один из столбцов enum. Пишет о необходимости строгого приведения типов))</li>
 <li>другое...</li>
 </ol>
 
@@ -42,5 +40,5 @@
 		<li>$cd storage-persistence</li>
 		<li>$mvn liquibase:update</li>
 	</ol>
-<li>Run App on server mapped on /goods</li>
+<li>Run App on server should mapped on /storage</li>
 </ol>

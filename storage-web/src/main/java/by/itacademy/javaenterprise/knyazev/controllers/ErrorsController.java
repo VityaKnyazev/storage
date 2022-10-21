@@ -14,7 +14,7 @@ import by.itacademy.javaenterprise.knyazev.exceptions.responses.ErrorMessage;
 @RestController
 public class ErrorsController {
 	@GetMapping("/errors")
-	public ResponseEntity<ErrorMessage> handleErrorpages(HttpServletRequest request) throws Exception {
+	public ResponseEntity<ErrorMessage> handleError(HttpServletRequest request) throws Exception {
 		Integer status = (Integer) request.getAttribute("javax.servlet.error.status_code");
 		
 		if (status == 400) {
@@ -25,6 +25,11 @@ public class ErrorsController {
 		if (status == 401) {
 			ErrorMessage message = new ErrorMessage(status, new Date(),"Unauthorized");
 			return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
+		}
+		
+		if (status == 403) {
+			ErrorMessage message = new ErrorMessage(status, new Date(),"Forbidden");
+			return new ResponseEntity<ErrorMessage>(message, HttpStatus.FORBIDDEN);
 		}
 		
 		if (status == 404) {

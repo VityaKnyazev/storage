@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import by.itacademy.javaenterprise.knyazev.dao.PurchasesDAO;
 import by.itacademy.javaenterprise.knyazev.entities.Purchase;
 import by.itacademy.javaenterprise.knyazev.entities.Storehouse;
 import by.itacademy.javaenterprise.knyazev.entities.User;
+import by.itacademy.javaenterprise.knyazev.security.SecurityUser;
 import by.itacademy.javaenterprise.knyazev.services.exceptions.ServiceException;
 import by.itacademy.javaenterprise.knyazev.utils.Status;
 
@@ -28,22 +30,15 @@ public class PurchasesService {
 	@Autowired
 	private StorehouseService storehouseService;
 	
-
 	@Transactional
 	public List<Purchase> showReserved() throws ServiceException {
-		User user = usersService.loadUserFromSecurityContext();
-		return purchasesDAO.findByUserIdAndStatus(user.getId(), Status.reserved.name());
+		SecurityUser securuityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return purchasesDAO.findByUserIdAndStatus(securuityUser.getId(), Status.reserved);
 	}
 	
 	@Transactional
-	public List<Purchase> showBought() throws ServiceException {
-		User user = usersService.loadUserFromSecurityContext();
-		
-		if (!user.getRole().equals(User.Role.ROLE_ADMIN)) {
-			logger.error("Only user with admin role can see bought purchases");
-			throw new ServiceException("Only user with admin role can see bought purchases");
-		}
-		return purchasesDAO.findByStatus(Status.bought.name());
+	public List<Purchase> showAllBought() throws ServiceException {
+		return purchasesDAO.findByStatus(Status.bought);
 	}
 
 	@Transactional
@@ -54,8 +49,9 @@ public class PurchasesService {
 			throw new ServiceException("Purchase id must be equals to null for saving!");
 		}
 
-		User user = usersService.loadUserFromSecurityContext();
-
+		Long id = ((SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+		User user = usersService.showUserById(id);
+		
 		Storehouse savedStorehouse = storehouseService.showStorehouseUnitById(purchase.getStorehouse().getId());
 		if (savedStorehouse.getGood().getId().longValue() != purchase.getStorehouse().getGood().getId().longValue()) {
 			logger.error("Purchase can't be saved because of error, gaven good not exists in storehouse!");
@@ -84,7 +80,7 @@ public class PurchasesService {
 		savedStorehouse.setQuantity(savedStorehouse.getQuantity().subtract(purchase.getQuantity()));
 		purchase.setStorehouse(savedStorehouse);
 		purchase.setUser(user);
-		purchase.setStatus(Status.reserved.name());
+		purchase.setStatus(Status.reserved);
 
 		Purchase savedPurchase = purchasesDAO.save(purchase);
 
@@ -103,7 +99,7 @@ public class PurchasesService {
 			throw new ServiceException("Purchase id must be equals to null or be above zero for saving!");
 		}		
 		
-		User user = usersService.loadUserFromSecurityContext();
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Optional<Purchase> isPresent = purchasesDAO.findById(purchase.getId());
 		
@@ -115,19 +111,19 @@ public class PurchasesService {
 		
 		Purchase savedPurchase = isPresent.get();
 		
-		if (savedPurchase.getUser().getId().longValue() != user.getId().longValue()) {
+		if (savedPurchase.getUser().getId().longValue() != securityUser.getId().longValue()) {
 			logger.error("Error current user doesn't possessed of gaven purchase. Error on boughting purchase");
 			throw new ServiceException("Error current user doesn't possessed of gaven purchase. Error on boughting purchase");
 		}
 		
-		savedPurchase.setStatus(Status.bought.name());
+		savedPurchase.setStatus(Status.bought);
 		savedPurchase.setDateTime(LocalDateTime.now());
 		return purchasesDAO.save(savedPurchase);		
 	}
 	
 	@Transactional
 	public void deletePurchase(Long id) throws ServiceException {
-		User user = usersService.loadUserFromSecurityContext();
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Optional<Purchase> isPresent = purchasesDAO.findById(id);
 				
@@ -138,12 +134,12 @@ public class PurchasesService {
 		
 		Purchase savedPurchase = isPresent.get();
 		
-		if (savedPurchase.getUser().getId().longValue() != user.getId().longValue()) {
+		if (savedPurchase.getUser().getId().longValue() != securityUser.getId().longValue()) {
 			logger.error("Error current user doesn't possessed of gaven purchase. Error on deleting purchase");
 			throw new ServiceException("Error current user doesn't possessed of gaven purchase. Error on deleting purchase");
 		}
 		
-		if (savedPurchase.getStatus().equals(Status.bought.name())) {
+		if (savedPurchase.getStatus().name().equals(Status.bought.name())) {
 			logger.error("Error current purchase have been bought already");
 			throw new ServiceException("Error current purchase have been bought already");
 		}
