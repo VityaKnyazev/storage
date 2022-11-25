@@ -19,8 +19,6 @@ public class StatusTypeConverter implements AttributeConverter<Status, String> {
 			return Status.reserved.name();
 		case bought :
 			return Status.bought.name();
-		case deleted :
-			return Status.deleted.name();
 		default:
 			throw new IllegalArgumentException(status.name() + " not supported.");
 		}		
@@ -37,8 +35,6 @@ public class StatusTypeConverter implements AttributeConverter<Status, String> {
 			return Status.reserved;
 		} else if (dbstatus.equals(Status.bought.name())) {
 			return Status.bought;
-		}  else if (dbstatus.equals(Status.deleted.name())) {
-			return Status.deleted;
 		} else {
 			throw new IllegalArgumentException(dbstatus + " not supported.");
 		}	

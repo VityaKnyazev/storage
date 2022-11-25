@@ -49,7 +49,7 @@ public class PurchasesController {
 	public ResponseEntity<PurchaseDTO> addPurchase(@Valid @RequestBody PurchaseDTO purchaseDTO)
 			throws ControllerException {
 		try {
-			Purchase purchase = purchasesService.savePurchase(purchaseMapperImpl.toPurchase(purchaseDTO));
+			Purchase purchase = purchasesService.reservePurchase(purchaseMapperImpl.toPurchase(purchaseDTO));
 			return new ResponseEntity<PurchaseDTO>(purchaseMapperImpl.toDTO(purchase), HttpStatus.CREATED);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);
@@ -61,7 +61,7 @@ public class PurchasesController {
 	public ResponseEntity<PurchaseDTO> changePurchase(@Valid @RequestBody PurchaseDTO purchaseDTO)
 			throws ControllerException {
 		try {
-			Purchase purchase = purchasesService.boughtPurchase(purchaseMapperImpl.toPurchase(purchaseDTO));
+			Purchase purchase = purchasesService.buyPurchase(purchaseMapperImpl.toPurchase(purchaseDTO));
 			return new ResponseEntity<PurchaseDTO>(purchaseMapperImpl.toDTO(purchase), HttpStatus.OK);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage(), e);

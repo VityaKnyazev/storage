@@ -33,7 +33,7 @@ public class Storehouse {
 	private Long id;
 	
 	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "good_id", nullable = false)
+	@JoinColumn(name = "good_id", nullable = false, unique = true)
 	private Good good;
 	
 	@Column(length = 15, name = "ttn_num")

@@ -36,8 +36,13 @@ public class CategoriesController {
 	CategoryMapper categoryMapperImpl;	
 
 	@GetMapping("/categories")
-	public List<CategoryDTO> getAll() {
-		return categoryMapperImpl.toDTOList(categoriesService.showAll());
+	public List<CategoryDTO> getAll() throws ControllerException {
+		try {
+			return categoryMapperImpl.toDTOList(categoriesService.showAll());
+		} catch (ServiceException e) {
+			logger.error(e.getMessage(), e);
+			throw new ControllerException(e);
+		}
 	}
 
 	@GetMapping("/categories/{id}")

@@ -42,7 +42,7 @@ public class Category {
 	@Immutable
 	private List<Good> goods;
 
-	public Category(long id, String name, String description) {
+	public Category(Long id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

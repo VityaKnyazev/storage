@@ -77,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.regexMatchers(HttpMethod.DELETE, "/purchases/.{1,}").hasRole("USER")
 				
 				.regexMatchers(HttpMethod.GET, "/(users|users/.{1,})").hasRole("ADMIN")
+				.regexMatchers(HttpMethod.PUT, "/users/.{1,}").hasAnyRole("USER", "ADMIN")
 				.regexMatchers(HttpMethod.DELETE, "/users/.{1,}").hasRole("ADMIN")
 				
 				.antMatchers(HttpMethod.POST, AUTHENTICATION_URL).permitAll()

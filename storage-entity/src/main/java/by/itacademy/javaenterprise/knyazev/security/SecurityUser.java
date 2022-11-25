@@ -1,9 +1,12 @@
 package by.itacademy.javaenterprise.knyazev.security;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import by.itacademy.javaenterprise.knyazev.entities.Role;
 
 public class SecurityUser implements UserDetails {
 
@@ -13,12 +16,17 @@ public class SecurityUser implements UserDetails {
 	private String name;
 	private String password;
 	private String email;
+	private Set<Role> roles;
+	private Boolean enabled;
 	private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-	public SecurityUser(long id, String name, String password, String email, Collection<? extends GrantedAuthority> grantedAuthorities) {
+	public SecurityUser(long id, String name, String password, String email, Set<Role> roles, Boolean enabled, Collection<? extends GrantedAuthority> grantedAuthorities) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
+		this.email = email;
+		this.roles = roles;
+		this.enabled = enabled;
 		this.grantedAuthorities = grantedAuthorities;
 	}
 
@@ -44,6 +52,10 @@ public class SecurityUser implements UserDetails {
 	public String getEmail() {
 		return email;
 	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -62,7 +74,7 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return enabled;
 	}
 
 }

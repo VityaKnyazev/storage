@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +23,23 @@ public class UsersService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UsersService.class);
 
-	@Autowired
+	private SecurityUsersService securityUsersService;
+	
 	private UsersDAO usersDAO;
 
-	@Autowired
 	private RolesDAO rolesDAO;
 
+	private PasswordEncoder passwordEncoder;
+	
+	
+
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	public UsersService(SecurityUsersService securityUsersService, UsersDAO usersDAO, RolesDAO rolesDAO, PasswordEncoder passwordEncoder) {
+		this.securityUsersService = securityUsersService;
+		this.usersDAO = usersDAO;
+		this.rolesDAO = rolesDAO;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	@Transactional
 	public List<User> showAll() {
@@ -40,6 +48,11 @@ public class UsersService {
 
 	@Transactional
 	public User showUserById(Long id) throws ServiceException {
+		if (id == null || id < 1L) {
+			logger.error("Bad user id={}", id);
+			throw new ServiceException("Bad user id=" + id);
+		}
+
 		User user = usersDAO.findById(id).orElse(null);
 
 		if (user == null) {
@@ -52,14 +65,21 @@ public class UsersService {
 
 	@Transactional
 	public User saveUser(User user) throws ServiceException {
-		if (usersDAO.existsByEmail(user.getEmail())) {
-			logger.error("User with email {}  alredy exists", user.getEmail());
-			throw new ServiceException("User with email " + user.getEmail() + " alredy exists");
+		if (user == null || user.getId() != null) {
+			logger.error("User not exists");
+			throw new ServiceException("User not exists");
 		}
 
-		if (usersDAO.existsByName(user.getName())) {
-			logger.error("User with name {}  alredy exists", user.getName());
-			throw new ServiceException("User with name " + user.getName() + " alredy exists");
+		String email = user.getEmail();
+		if (email == null || usersDAO.existsByEmail(email)) {
+			logger.error("User with email {}  already exists", email);
+			throw new ServiceException("User with email " + email + "already exists");
+		}
+
+		String name = user.getName();
+		if (name == null || usersDAO.existsByName(name)) {
+			logger.error("User with name {}  already exists", name);
+			throw new ServiceException("User with name " + name + " already exists");
 		}
 
 		Role role = rolesDAO.findByName(RoleType.ROLE_USER);
@@ -69,57 +89,50 @@ public class UsersService {
 
 		User savedUser = usersDAO.save(user);
 
-		if (savedUser == null || savedUser.getId() <= 0L) {
+		if (savedUser == null || savedUser.getId() == null || savedUser.getId() < 1L) {
+			logger.error("Failed to register User with name {}", user.getName());
 			throw new ServiceException("Failed to register User with name " + user.getName());
 		}
 
 		return savedUser;
 	}
 
+
 	@Transactional
 	public User updateUser(User user) throws ServiceException {
-		Long userId = user.getId();
-		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if (userId == null || userId != securityUser.getId()) {
-			logger.error("User with id {}  is not saved in databse or user you want to change is not authorized", user.getId());
-			throw new ServiceException("Can't update user with null or changed id!");
+		if (user == null || user.getId() == null) {
+			logger.error("Can't update user. Provided user is not valid");
+			throw new ServiceException("Can't update user. Provided user is not valid");
 		}
 
-		User savedUser = usersDAO.findById(userId).orElse(null);
+		SecurityUser securityUser = securityUsersService.getSecurityUserFromSecurityContext();
 
-		if (savedUser == null) {
-			logger.error("User with id {}  is not saved in databse", user.getId());
-			throw new ServiceException("Can't update user that not exists!");
+		if (user.getId() != securityUser.getId()) {
+			if (!securityUser.getAuthorities().stream()
+					.anyMatch(ga -> ga.getAuthority().equals(RoleType.ROLE_ADMIN.name()))) {
+				logger.error("Can't update user. Current user hasn't permissions.");
+				throw new ServiceException("Can't update user. Current user hasn't permissions.");
+			}
 		}
 
-		if (user.getRoles() == null) {
-			logger.error("User role or user roles doesn't present!");
-			throw new ServiceException("User role or user roles doesn't present!");
-		}
 
-		if (user.getRoles().isEmpty()
-				|| !user.getRoles().stream().allMatch(role -> rolesDAO.existsByName(role.getName()))) {
-			logger.error("User role or user roles doesn't present or not valid!");
-			throw new ServiceException("User role or user roles doesn't present or not valid!");
-		}
-
-		if (!user.getPassword().equals(savedUser.getPassword())) {
+		if (!user.getPassword().equals(securityUser.getPassword())) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 
 		User updatedUser = usersDAO.save(user);
 
-		if (updatedUser == null || updatedUser.getId() < 1L) {
+		if (updatedUser == null || updatedUser.getId() == null || updatedUser.getId() < 1L) {
 			throw new ServiceException("Failed to update User with name " + user.getName());
 		}
 
 		return updatedUser;
 	}
 
+
 	@Transactional
 	public void deleteUser(Long id) throws ServiceException {
-		if (usersDAO.existsById(id)) {
+		if ((id != null) && (usersDAO.existsById(id))) {
 			usersDAO.deleteById(id);
 		} else {
 			logger.error("Error on deleting user on id={}!", id);
