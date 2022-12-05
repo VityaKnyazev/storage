@@ -26,13 +26,13 @@
 
 <h2>Project's limitations</h2>
 <ol>
-<li>Плохо сделаны тесты. Успел замокать один сервис.</li>
-<li>Не сделаны интграционные тесты.</li>
+<li>Отсутствие использования не реляционной базы данных</li>
 <li>другое...</li>
 </ol>
 
 <h3>To run App you should:</h3>
 <ol>
+<li>Run docker daemon</li>
 <li>Build project: $mvn clean install</li>
 <li>Run new postgresql server for the App: $docker-compose up -d</li>
 <li>Run liquibase to create tables and insert data:</li>
@@ -40,5 +40,9 @@
 		<li>$cd storage-persistence</li>
 		<li>$mvn liquibase:update</li>
 	</ol>
-<li>Run App on server should mapped on /storage</li>
+<li>Run App on server:</li>
+	<ol>
+		<li>should login with post request including json-data { "username" : "Admin", "password" : "admin" } or json-data { "username" : "User", "password" : "user" } mapped on /storage/login</li>
+		<li>showing list of goods map to /storage/goods and etc</li>
+	</ol>
 </ol>

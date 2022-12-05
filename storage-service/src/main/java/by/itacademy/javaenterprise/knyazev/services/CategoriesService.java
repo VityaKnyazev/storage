@@ -35,11 +35,14 @@ public class CategoriesService {
 
 		List<Category> categories = categoriesDAO.findAll();
 
-		if (categories == null || categories.isEmpty())
+		if (categories == null || categories.isEmpty()) {
 			throw new ServiceException("Categories not found!");
-
+		}
+		
 		categories.stream().forEach(c -> {
-			categoriesGoodsQuantity.put(c, goodsDAO.findCountByCategoryId(c.getId()));
+			Long quantity = goodsDAO.findCountByCategoryId(c.getId());
+			quantity = (quantity != null) ? quantity : 0L;
+			categoriesGoodsQuantity.put(c, quantity);
 		});
 
 		return categoriesGoodsQuantity;
@@ -52,10 +55,11 @@ public class CategoriesService {
 			throw new ServiceException("Error loading category, id must be not " + id + "!");
 		}
 
-		Optional<Category> category = categoriesDAO.findById(id);
-		if (category.isPresent()) {
-			category.get().getGoods().size();
-			return category.get();
+		Optional<Category> optionalCategory = categoriesDAO.findById(id);
+		if (optionalCategory.isPresent()) {
+			Category savedCategory = optionalCategory.get();
+			savedCategory.getGoods();
+			return savedCategory;
 		}
 
 		logger.error("Error loading category on id={}!", id);
@@ -69,7 +73,8 @@ public class CategoriesService {
 
 		if (existing != null) {
 			logger.error("Can't save category. Category with name={} already exists!", category.getName());
-			throw new ServiceException("Can't save category. Category with name=" + category.getName() + " already exists!");
+			throw new ServiceException(
+					"Can't save category. Category with name=" + category.getName() + " already exists!");
 		}
 
 		Category savedCategory = null;
@@ -90,7 +95,7 @@ public class CategoriesService {
 	@Transactional
 	public Category updateCategory(Category category) throws ServiceException {
 		Long id = (category != null) ? category.getId() : null;
-		
+
 		if (id == null || id <= 0L) {
 			logger.error("Category must have a valid id for updating!");
 			throw new ServiceException("Category must have a valid id for updating!");
@@ -100,9 +105,9 @@ public class CategoriesService {
 			logger.error("Error on updating category by non existing id = {}!", id);
 			throw new ServiceException("Error on updating category by non existing id = " + id);
 		}
-		
+
 		Category updatedCategory = categoriesDAO.save(category);
-		
+
 		if (updatedCategory != null) {
 			if ((updatedCategory.getId() != null) && (updatedCategory.getId() > 0L)) {
 				return updatedCategory;
